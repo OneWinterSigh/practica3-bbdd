@@ -1,5 +1,6 @@
 package src.panaderias;
 
+import java.io.StringBufferInputStream;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.Types;
@@ -91,8 +92,8 @@ public class DBConnection {
 		try {
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(sql);
-		} catch (Exception e) {
-			// Error Handling
+		} catch (SQLException e) {
+			return null;
 		} finally {
 			try {
 				if (stmt != null)
@@ -116,7 +117,20 @@ public class DBConnection {
 	}
 
 	public boolean tableExists(String tableName) {
-		return false;
+		boolean res = false;
+		try{
+			ResultSet rs = query("SHOW TABLES");
+			while (rs.next() && !res){
+				if(rs.getString(1).equals(tableName)){
+					res = true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return res;
+
 	}
 
 }

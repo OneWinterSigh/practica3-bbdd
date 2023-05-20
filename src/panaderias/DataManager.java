@@ -1,4 +1,4 @@
-package src.panaderias;
+package panaderias;
 
 import java.util.ArrayList;
 

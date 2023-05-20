@@ -1,4 +1,4 @@
-package src.panaderias;
+package panaderias;
 
 public abstract class DBTable {
 
