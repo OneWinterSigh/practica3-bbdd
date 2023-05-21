@@ -38,7 +38,7 @@ public class Empleado extends DBTable {
 	}
 
 	public String getApellido1() {
-		if(DBSync){
+		if (DBSync) {
 			getEntryChanges();
 		}
 		return apellido1;
@@ -46,7 +46,7 @@ public class Empleado extends DBTable {
 
 	public void setApellido1(String apellido1) {
 		this.apellido1 = apellido1;
-		if(DBSync){
+		if (DBSync) {
 			updateEntry();
 		}
 	}
@@ -67,9 +67,9 @@ public class Empleado extends DBTable {
 	}
 
 	boolean insertEntry() {
-		String query = "INSERT INTO  empleado VALUES ("+ id_empleado + ", '" ;
+		String query = "INSERT INTO  empleado VALUES (" + id_empleado + ", '";
 		conn.update(query);
-		
+
 	}
 
 	boolean updateEntry() {

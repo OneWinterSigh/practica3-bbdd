@@ -1,4 +1,4 @@
-package src.panaderias;
+package panaderias;
 
 import java.io.StringBufferInputStream;
 import java.sql.Connection;
@@ -118,10 +118,10 @@ public class DBConnection {
 
 	public boolean tableExists(String tableName) {
 		boolean res = false;
-		try{
+		try {
 			ResultSet rs = query("SHOW TABLES");
-			while (rs.next() && !res){
-				if(rs.getString(1).equals(tableName)){
+			while (rs.next() && !res) {
+				if (rs.getString(1).equals(tableName)) {
 					res = true;
 				}
 			}
