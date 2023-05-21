@@ -35,7 +35,7 @@ public class DBConnection {
 	public boolean connect() {
 		try {
 			if (conn == null) {
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("com.mysql.cj.jdbc.Driver");
 				conn = DriverManager.getConnection(url, user, pass);
 			} else {
 				return false;
@@ -86,6 +86,7 @@ public class DBConnection {
 	}
 
 	// Comprobar que devuelve null
+	// No se pueden cerrar ni el stmt ni el result -> ¿Cuándo los cierro?
 	public ResultSet query(String sql) {
 		Statement stmt = null;
 		ResultSet result = null;
@@ -93,20 +94,7 @@ public class DBConnection {
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(sql);
 		} catch (SQLException e) {
-			return null;
-		} finally {
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (Exception e) {
-			}
-			;
-			try {
-				if (result != null)
-					result.close();
-			} catch (Exception e) {
-			}
-			;
+			e.printStackTrace();
 		}
 
 		return result;
@@ -120,17 +108,17 @@ public class DBConnection {
 		boolean res = false;
 		try {
 			ResultSet rs = query("SHOW TABLES");
+
 			while (rs.next() && !res) {
-				if (rs.getString(1).equals(tableName)) {
+				if (rs.getString(1).equals(tableName))
 					res = true;
-				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			res = false;
 		}
-		return res;
 
+		return res;
 	}
 
 }

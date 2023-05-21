@@ -67,9 +67,9 @@ public class Empleado extends DBTable {
 	}
 
 	boolean insertEntry() {
-		String query = "INSERT INTO  empleado VALUES (" + id_empleado + ", '";
-		conn.update(query);
-
+		// String query = "INSERT INTO empleado VALUES (" + id_empleado + ", '";
+		// conn.update(query);
+		return false;
 	}
 
 	boolean updateEntry() {
