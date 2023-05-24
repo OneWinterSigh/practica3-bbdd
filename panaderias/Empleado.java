@@ -1,5 +1,7 @@
 package panaderias;
 
+import java.sql.SQLException;
+
 public class Empleado extends DBTable {
 
 	private int id_empleado;
@@ -65,15 +67,31 @@ public class Empleado extends DBTable {
 	boolean createTable() {
 		return false;
 	}
-
+ 
 	boolean insertEntry() {
-		// String query = "INSERT INTO empleado VALUES (" + id_empleado + ", '";
-		// conn.update(query);
-		return false;
+		if(n_ss == null){
+			n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
+		}
+		if(apellido1 == null){
+			apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
+		}
+		if (apellido2 == null){
+			apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
+		}
+		String query = "INSERT INTO empleado VALUES ("+ id_empleado + ", " 
+														+ n_ss + ", " 
+														+ apellido1 + "," 
+														+ apellido2 + ")";
+		return conn.update(query)> 0 ;
 	}
 
 	boolean updateEntry() {
-		return false;
+		String query = "UPDATE empleado SET n_ss = "+ n_ss 
+											+ " nombre=" + nombre 
+											+ " apellido1=" + apellido1 
+											+ " apellido2=" + apellido2
+											+ " WHERE id_empleado= " + id_empleado + "";
+		return conn.update(query) >0;
 	}
 
 	boolean deleteEntry() {
