@@ -5,8 +5,11 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.naming.spi.DirStateFactory.Result;
+
+import com.mysql.cj.x.protobuf.MysqlxPrepare.Prepare;
 
 //import apple.laf.JRSUIConstants.State;
 
@@ -82,7 +85,54 @@ public class DBConnection {
 
 	// TODO ----->
 	public int update(String sql, ArrayList<Object> a) {
-		return -1;
+
+		int nFilasAfectadas = 0;
+		int contadorPos = 0;
+
+		Iterator iter = a.iterator();
+		Object par;
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			while (iter.hasNext()) {
+				par = iter.next();
+
+				if (par.getClass().getName() == "java.lang.Integer") {
+					pstmt.setInt(contadorPos, (int) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.lang.Float") {
+					pstmt.setFloat(contadorPos, (float) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.lang.String") {
+					pstmt.setString(contadorPos, (String) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.lang.Double") {
+					pstmt.setDouble(contadorPos, (double) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.sql.Date") {
+					pstmt.setDate(contadorPos, (java.sql.Date) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.sql.Time") {
+					pstmt.setTime(contadorPos, (java.sql.Time) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				}
+				// else?
+			}
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+
+		return nFilasAfectadas;
 	}
 
 	// Comprobar que devuelve null
@@ -101,7 +151,55 @@ public class DBConnection {
 	}
 
 	public ResultSet query(String sql, ArrayList<Object> a) {
-		return null;
+		int nFilasAfectadas = 0;
+		ResultSet result;
+
+		int contadorPos = 0;
+
+		Iterator iter = a.iterator();
+		Object par;
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			while (iter.hasNext()) {
+				par = iter.next();
+
+				if (par.getClass().getName() == "java.lang.Integer") {
+					pstmt.setInt(contadorPos, (int) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.lang.Float") {
+					pstmt.setFloat(contadorPos, (float) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.lang.String") {
+					pstmt.setString(contadorPos, (String) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.lang.Double") {
+					pstmt.setDouble(contadorPos, (double) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.sql.Date") {
+					pstmt.setDate(contadorPos, (java.sql.Date) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				} else if (par.getClass().getName() == "java.sql.Time") {
+					pstmt.setTime(contadorPos, (java.sql.Time) par);
+					nFilasAfectadas++;
+					contadorPos++;
+				}
+				// else?
+			}
+
+			result = pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return result;
 	}
 
 	public boolean tableExists(String tableName) {
