@@ -1,5 +1,7 @@
 package panaderias;
 
+import java.sql.SQLException;
+
 public class Local extends DBTable {
 
 	private int id_local;
@@ -48,19 +50,54 @@ public class Local extends DBTable {
 	}
 
 	boolean createTable() {
-		return false;
+		String query = "CREATE TABLE IF NOT EXISTS local ("
+				+ "id_local INT NOT NULL AUTO_INCREMENT,"
+				+ "tiene_cafeteria BOOLEAN NOT NULL,"
+				+ "direccion VARCHAR(100) NOT NULL,"
+				+ "descripcion VARCHAR(100) NOT NULL,"
+				+ "PRIMARY KEY (id_local)"
+				+ ");";
+		return conn.update(query) > 0;
 	}
 
 	boolean insertEntry() {
-		return false;
+		if (direccion == null) {
+			direccion = DBConnection.NULL_SENTINEL_VARCHAR;
+		}
+		/*
+		 * if(tiene_cafeteria == null) {
+		 * tiene_cafeteria = DBConnection.NULL_SENTINEL_BINARY;
+		 * }
+		 */
+		if (descripcion == null) {
+			descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
+		}
+
+		// Write a query to insert a new entry into the table
+		String query = "INSERT INTO local (id_local, tiene_cafeteria, direccion, descripcion) VALUES ("
+				+ id_local + ", "
+				+ tiene_cafeteria + ", "
+				+ direccion + ", "
+				+ descripcion + ");";
+
+		return conn.update(query) > 0;
 	}
 
 	boolean updateEntry() {
-		return false;
+		// Write a query to update an entry in the table
+		String query = "UPDATE local SET "
+				+ "tiene_cafeteria = " + tiene_cafeteria + ", "
+				+ "direccion = " + direccion + ", "
+				+ "descripcion = " + descripcion + " "
+				+ "WHERE id_local = " + id_local + ";";
+		return conn.update(query) > 0;
 	}
 
 	boolean deleteEntry() {
-		return false;
+		// Create a query to delete the current entry from the table
+		String query = "DELETE FROM local WHERE id_local = " + id_local + ";";
+
+		return conn.update(query) > 0;
 	}
 
 	void getEntryChanges() {
