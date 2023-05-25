@@ -65,7 +65,15 @@ public class Empleado extends DBTable {
 	}
 
 	boolean createTable() {
-		return false;
+		
+			String query = "CREATE TABLE IF NOT EXISTS Empleado (" +
+					id_empleado + " INT PRIMARY KEY," +
+					n_ss + " VARCHAR(50)," +
+					nombre+ " VARCHAR(50),"+
+					apellido1 +" VARCHAR(50),"+
+					apellido2 +" VARCHAR(50);";
+            
+            return conn.update(query) >0;
 	}
  
 	boolean insertEntry() {
