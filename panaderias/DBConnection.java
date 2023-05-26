@@ -71,6 +71,9 @@ public class DBConnection {
 	// -- mirar las diapositivas
 	public int update(String sql) {
 		try {
+			if(!connect()){
+				return -1;
+			}
 			Statement stmt = conn.createStatement();
 			int filasAfectadas = stmt.executeUpdate(sql);
 			stmt.close();
@@ -93,6 +96,9 @@ public class DBConnection {
 		Object par;
 
 		try {
+			if(!connect()){
+				return -1;
+			}
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 
 			while (iter.hasNext()) {
@@ -141,6 +147,9 @@ public class DBConnection {
 		Statement stmt = null;
 		ResultSet result = null;
 		try {
+			if(!connect()){
+				return result = null;
+			}
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(sql);
 		} catch (SQLException e) {
@@ -161,8 +170,11 @@ public class DBConnection {
 		Object par;
 
 		try {
+			if(!connect()){
+				return result = null;
+			}
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-
+			
 			while (iter.hasNext()) {
 				par = iter.next();
 
@@ -206,6 +218,9 @@ public class DBConnection {
 	public boolean tableExists(String tableName) {
 		boolean res = false;
 		try {
+			if(!connect()){
+				return false;
+			}
 			ResultSet rs = query("SHOW TABLES");
 
 			while (rs.next() && !res) {

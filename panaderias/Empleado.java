@@ -15,11 +15,46 @@ public class Empleado extends DBTable {
 
 	public Empleado(int id_empleado, DBConnection conn, boolean DBSync) {
 		super(conn, DBSync);
+		this.id_empleado = id_empleado;
+		n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
+		apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
+		apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
+		nombre = DBConnection.NULL_SENTINEL_VARCHAR;
+		id_empleado = DBConnection.NULL_SENTINEL_INT; 
+		if ((conn.connect()) && DBSync) {
+			if (!(conn.tableExists("EMPLEADO"))) {
+				createTable();
+			}
+			if (!this.insertEntry()) {
+				this.id_empleado= DBConnection.NULL_SENTINEL_INT;
+				setSync(false);
+			}
+		}
 	}
 
 	public Empleado(int id_empleado, String n_ss, String nombre, String apellido1, String apellido2, DBConnection conn,
 			boolean DBSync) {
+
 		super(conn, DBSync);
+		this.n_ss = n_ss;
+		this.apellido1 = apellido1;
+		this.apellido2 = apellido2;
+		this.nombre = nombre;
+		this.id_empleado = id_empleado;
+
+		if ((conn.connect()) && DBSync) {
+			if (!(conn.tableExists("EMPLEADO"))) {
+				createTable();
+			}
+			if (!insertEntry()) {
+				this.id_empleado = DBConnection.NULL_SENTINEL_INT;
+				this.nombre = DBConnection.NULL_SENTINEL_VARCHAR;
+				this.apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
+				this.apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
+				this.n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
+				setSync(false);
+			}
+		}
 	}
 
 	//no hace falta actualizar porque este no cambia
@@ -98,17 +133,17 @@ public class Empleado extends DBTable {
 	public void destroy() {
 		if(DBSync){
 			deleteEntry();
+		}
 			n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
 			apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
 			apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
 			nombre = DBConnection.NULL_SENTINEL_VARCHAR;
 			id_empleado = DBConnection.NULL_SENTINEL_INT;
 			setSync(false);
-		}
 	}
 
 	boolean createTable() {
-		if(this.conn.connect() && !this.conn.tableExists("EMPLEADO")){
+		if(!this.conn.tableExists("EMPLEADO")){
 			String query = "CREATE TABLE IF NOT EXISTS Empleado (" +
 					id_empleado + " INT PRIMARY KEY," +
 					n_ss + " VARCHAR(50)," +
@@ -135,7 +170,7 @@ public class Empleado extends DBTable {
 		if (apellido2 == null){
 			apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
 		}
-		if(this.conn.connect() && !this.conn.tableExists("EMPLEADO")){
+		if(this.conn.tableExists("EMPLEADO")){
 			String query = "INSERT INTO empleado VALUES ("+ id_empleado + ", " 
 															+ n_ss + ", " 
 															+ apellido1 + "," 
@@ -147,7 +182,7 @@ public class Empleado extends DBTable {
 	}
 
 	boolean updateEntry() {
-		if(this.conn.connect() && !this.conn.tableExists("EMPLEADO")){
+		if(!this.conn.tableExists("EMPLEADO")){
 			String query = "UPDATE empleado SET n_ss = "+ n_ss 
 												+ " nombre=" + nombre 
 												+ " apellido1=" + apellido1 
@@ -161,7 +196,7 @@ public class Empleado extends DBTable {
 
 	boolean deleteEntry() {
 		boolean deleted = false;
-		if (this.conn.connect() && this.conn.tableExists("EMPLEADO")){
+		if (this.conn.tableExists("EMPLEADO")){
 			String query = "DELETE FROM EMPLEADO WHERE id_empleado = " + getId_empleado();;
 			deleted = conn.update(query)>0;	
 		}
@@ -170,7 +205,7 @@ public class Empleado extends DBTable {
 	
 	void getEntryChanges() {
 		ResultSet rs = null;
-		if (conn.connect() && conn.tableExists("EMPLEADO")) {
+		if (this.conn.tableExists("EMPLEADO")) {
 			try {
 				String query = "SELECT * FROM EMPLEADO WHERE id_empleado = " + getId_empleado();
 				rs = conn.query(query);
