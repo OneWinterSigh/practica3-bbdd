@@ -1,6 +1,9 @@
 package panaderias;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Empleado extends DBTable {
 
@@ -65,7 +68,7 @@ public class Empleado extends DBTable {
 	}
 
 	boolean createTable() {
-		
+		if(this.conn.connect() && !this.conn.tableExists("EMPLEADO")){
 			String query = "CREATE TABLE IF NOT EXISTS Empleado (" +
 					id_empleado + " INT PRIMARY KEY," +
 					n_ss + " VARCHAR(50)," +
@@ -74,6 +77,9 @@ public class Empleado extends DBTable {
 					apellido2 +" VARCHAR(50);";
             
             return conn.update(query) >0;
+		}else{
+			return false;
+		}
 	}
  
 	boolean insertEntry() {
@@ -86,27 +92,62 @@ public class Empleado extends DBTable {
 		if (apellido2 == null){
 			apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
 		}
-		String query = "INSERT INTO empleado VALUES ("+ id_empleado + ", " 
-														+ n_ss + ", " 
-														+ apellido1 + "," 
-														+ apellido2 + ")";
-		return conn.update(query)> 0 ;
+		if(this.conn.connect() && !this.conn.tableExists("EMPLEADO")){
+			String query = "INSERT INTO empleado VALUES ("+ id_empleado + ", " 
+															+ n_ss + ", " 
+															+ apellido1 + "," 
+															+ apellido2 + ")";
+			return conn.update(query)> 0 ;
+		}else{
+			return false;
+		}
 	}
 
 	boolean updateEntry() {
-		String query = "UPDATE empleado SET n_ss = "+ n_ss 
-											+ " nombre=" + nombre 
-											+ " apellido1=" + apellido1 
-											+ " apellido2=" + apellido2
-											+ " WHERE id_empleado= " + id_empleado + "";
-		return conn.update(query) >0;
+		if(this.conn.connect() && !this.conn.tableExists("EMPLEADO")){
+			String query = "UPDATE empleado SET n_ss = "+ n_ss 
+												+ " nombre=" + nombre 
+												+ " apellido1=" + apellido1 
+												+ " apellido2=" + apellido2
+												+ " WHERE id_empleado= " + id_empleado + "";
+			return conn.update(query) >0;
+		}else{
+			return false;
+		}
 	}
 
 	boolean deleteEntry() {
-		return false;
+		if (this.conn.connect() && this.conn.tableExists("EMPLEADO")){
+			return true;
+		}else{
+			return false;
+		}
 	}
-
+	
 	void getEntryChanges() {
+		ResultSet rs = null;
+		if (conn.connect() && conn.tableExists("EMPLEADO")) {
+			try {
+				String query = "SELECT * FROM EMPLEADO WHERE id_empleado = ?";
+				rs = conn.query(query);
+				
+				if (rs.next()) { //tengo q mirar si es null?
+					n_ss = rs.getString("n_ss");
+					nombre = rs.getString("nombre");
+					apellido1 = rs.getString("apellido1");
+					apellido2 = rs.getString("apellido2");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 
+			if (rs != null) { //hay q cerral el rs?
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
