@@ -1,5 +1,5 @@
 package panaderias;
-
+import java.util.ArrayList;
 import java.io.StringBufferInputStream;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -151,6 +151,7 @@ public class DBConnection {
 	}
 
 	public ResultSet query(String sql, ArrayList<Object> a) {
+	
 		int nFilasAfectadas = 0;
 		ResultSet result;
 
@@ -218,5 +219,6 @@ public class DBConnection {
 
 		return res;
 	}
-
 }
+
+
