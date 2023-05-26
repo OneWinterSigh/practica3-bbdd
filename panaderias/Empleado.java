@@ -16,11 +16,10 @@ public class Empleado extends DBTable {
 	public Empleado(int id_empleado, DBConnection conn, boolean DBSync) {
 		super(conn, DBSync);
 		this.id_empleado = id_empleado;
-		n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
-		apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
-		apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
-		nombre = DBConnection.NULL_SENTINEL_VARCHAR;
-		id_empleado = DBConnection.NULL_SENTINEL_INT; 
+		this.n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
+		this.apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
+		this.apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
+		this.nombre = DBConnection.NULL_SENTINEL_VARCHAR;
 		if ((conn.connect()) && DBSync) {
 			if (!(conn.tableExists("EMPLEADO"))) {
 				createTable();
@@ -59,6 +58,9 @@ public class Empleado extends DBTable {
 
 	//no hace falta actualizar porque este no cambia
 	public int getId_empleado() {
+		if(DBSync){
+			getEntryChanges();
+		}
 		return id_empleado;
 	}
 
@@ -144,12 +146,12 @@ public class Empleado extends DBTable {
 
 	boolean createTable() {
 		if(!this.conn.tableExists("EMPLEADO")){
-			String query = "CREATE TABLE IF NOT EXISTS Empleado (" +
+			String query = "CREATE TABLE IF NOT EXISTS empleado (" +
 					id_empleado + " INT PRIMARY KEY," +
-					n_ss + " VARCHAR(50)," +
-					nombre+ " VARCHAR(50),"+
-					apellido1 +" VARCHAR(50),"+
-					apellido2 +" VARCHAR(50);";
+					n_ss + " VARCHAR(100)," +
+					nombre+ " VARCHAR(100),"+
+					apellido1 +" VARCHAR(100),"+
+					apellido2 +" VARCHAR(100);";
             
             return conn.update(query) >0;
 		}else{
@@ -197,7 +199,7 @@ public class Empleado extends DBTable {
 	boolean deleteEntry() {
 		boolean deleted = false;
 		if (this.conn.tableExists("EMPLEADO")){
-			String query = "DELETE FROM EMPLEADO WHERE id_empleado = " + getId_empleado();;
+			String query = "DELETE FROM EMPLEADO WHERE id_empleado = " + id_empleado;
 			deleted = conn.update(query)>0;	
 		}
 		return deleted;
@@ -207,7 +209,7 @@ public class Empleado extends DBTable {
 		ResultSet rs = null;
 		if (this.conn.tableExists("EMPLEADO")) {
 			try {
-				String query = "SELECT * FROM EMPLEADO WHERE id_empleado = " + getId_empleado();
+				String query = "SELECT * FROM EMPLEADO WHERE id_empleado = " + id_empleado;
 				rs = conn.query(query);
 				
 				if (rs != null && rs.next()) { //tengo q mirar si es null? while?
