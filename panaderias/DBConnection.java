@@ -1,4 +1,5 @@
 package panaderias;
+
 import java.util.ArrayList;
 import java.io.StringBufferInputStream;
 import java.sql.Connection;
@@ -71,12 +72,8 @@ public class DBConnection {
 	// -- mirar las diapositivas
 	public int update(String sql) {
 		try {
-			if(!connect()){
-				return -1;
-			}
 			Statement stmt = conn.createStatement();
 			int filasAfectadas = stmt.executeUpdate(sql);
-			stmt.close();
 			return filasAfectadas;
 
 		} catch (SQLException e) {
@@ -96,7 +93,7 @@ public class DBConnection {
 		Object par;
 
 		try {
-			if(!connect()){
+			if (!connect()) {
 				return -1;
 			}
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -147,20 +144,17 @@ public class DBConnection {
 		Statement stmt = null;
 		ResultSet result = null;
 		try {
-			if(!connect()){
-				return result = null;
-			}
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(sql);
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-
-		return result;
 	}
 
 	public ResultSet query(String sql, ArrayList<Object> a) {
-	
+
 		int nFilasAfectadas = 0;
 		ResultSet result;
 
@@ -170,11 +164,11 @@ public class DBConnection {
 		Object par;
 
 		try {
-			if(!connect()){
+			if (!connect()) {
 				return result = null;
 			}
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
+
 			while (iter.hasNext()) {
 				par = iter.next();
 
@@ -218,12 +212,12 @@ public class DBConnection {
 	public boolean tableExists(String tableName) {
 		boolean res = false;
 		try {
-			if(!connect()){
-				return false;
-			}
+
+			System.out.println("fuera del primer if");
 			ResultSet rs = query("SHOW TABLES");
 
 			while (rs.next() && !res) {
+				System.out.println("llega al if");
 				if (rs.getString(1).equals(tableName))
 					res = true;
 			}
@@ -235,5 +229,3 @@ public class DBConnection {
 		return res;
 	}
 }
-
-
