@@ -20,11 +20,14 @@ public class Empleado extends DBTable {
 		this.apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.nombre = DBConnection.NULL_SENTINEL_VARCHAR;
-		if ((conn.connect()) && DBSync) {
+
+		if (DBSync) {
+			System.out.println("entra en el connect");
 			if (!(conn.tableExists("Empleado"))) {
 				createTable();
 			}
-			if (!this.insertEntry()) {
+			if (!insertEntry()) {
+				System.out.println("He entrado");
 				this.id_empleado = DBConnection.NULL_SENTINEL_INT;
 				setSync(false);
 			}
@@ -41,7 +44,7 @@ public class Empleado extends DBTable {
 		this.nombre = nombre;
 		this.id_empleado = id_empleado;
 
-		if ((conn.connect()) && DBSync) {
+		if (DBSync) {
 			if (!(conn.tableExists("Empleado"))) {
 				createTable();
 			}
@@ -164,6 +167,7 @@ public class Empleado extends DBTable {
 	boolean insertEntry() {
 		try {
 			if (conn.query("SELECT * FROM Empleado WHERE id_empleado = " + id_empleado).next()) {
+				System.out.println("Entra aqui");
 				return false;
 			}
 
@@ -187,9 +191,8 @@ public class Empleado extends DBTable {
 					+ apellido1 + "','"
 					+ apellido2 + "','"
 					+ n_ss + "');";
-			return conn.update(query) > 0;
+			return conn.update(query) >= 0;
 		} else {
-			// System.out.println("La tabla no existe");
 			return false;
 		}
 	}

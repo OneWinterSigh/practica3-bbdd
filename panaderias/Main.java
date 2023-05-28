@@ -16,7 +16,6 @@ public class Main {
 		// Hacer pruebas aquí para comprobar la funcionalidad
 		System.out.println("-- INICIO --");
 		DBConnection conexion = new DBConnection("localhost", 3306, "root", "1234", "panaderias");
-		conexion.connect();
 		System.out.println("-- CONECTADO A LA BASE DE DATOS --");
 
 		// Metodos de Empleado
@@ -59,6 +58,7 @@ public class Main {
 
 		System.out.println(empleado2);
 
+		empleado2.insertEntry();
 		System.out.println(empleado1);
 		// System.out.println(empleado2.createTable());
 		// System.out.println(conexion.tableExists("Empleado"));
@@ -66,23 +66,6 @@ public class Main {
 		boolean inser1 = empleado1.insertEntry();
 		System.out.println(inser1);
 		System.out.println(inser2);
-
-		// // Ejemplo de actualización (update)
-		String updateSql = "UPDATE Empleado SET nombre = 'Juan' WHERE id_empleado = 1";
-		int rowsAffected = conexion.update(updateSql);
-		System.out.println("Filas afectadas: " + rowsAffected);
-
-		String selectSql = "SELECT * FROM Empleado";
-		ResultSet resultSet = conexion.query(selectSql);
-		try {
-			while (resultSet.next()) {
-				int id_empleado = resultSet.getInt("id_empleado");
-				String nombre = resultSet.getString("nombre");
-				System.out.println("ID Empleado: " + id_empleado + ", Nombre: " + nombre);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace(); // O maneja la excepción de alguna otra manera
-		}
 
 		// Metodos de Local
 
@@ -104,10 +87,7 @@ public class Main {
 		local.setTiene_cafeteria(false);
 		local.setDireccion("Calle secundaria");
 		local.setDescripcion("Local pequeño y feo");
-		////
-		// // Actualizar la entrada en la base de datos
-		boolean updated = local.updateEntry();
-		System.out.println(updated ? "Entrada actualizada con éxito" : "Error al actualizar la entrada");
+
 		////
 		//// // Obtener los cambios de la entrada desde la base de datos
 		local.getEntryChanges();
@@ -126,11 +106,11 @@ public class Main {
 
 		// Crear un nuevo registro de Trabaja
 		int id_empleado = 1;
-		int id_local = 1;
+		int codigo = 1;
 		java.sql.Date fecha_inicio = java.sql.Date.valueOf("2023-01-01");
 		java.sql.Date fecha_fin = java.sql.Date.valueOf("2023-05-31");
 		//
-		Trabaja trabaja = new Trabaja(id_empleado, id_local, fecha_inicio, fecha_fin,
+		Trabaja trabaja = new Trabaja(id_empleado, codigo, fecha_inicio, fecha_fin,
 				conexion, true);
 		//
 		//// // Obtener los datos de un registro existente de Trabaja

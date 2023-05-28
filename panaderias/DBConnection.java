@@ -39,6 +39,7 @@ public class DBConnection {
 	public boolean connect() {
 		try {
 			if (conn == null) {
+				System.out.println("MEcagoen la puta");
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				conn = DriverManager.getConnection(url, user, pass);
 			} else {
@@ -77,7 +78,7 @@ public class DBConnection {
 			return filasAfectadas;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Excepcion");
 			e.printStackTrace();
 			return -1;
 		}

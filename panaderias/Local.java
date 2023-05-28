@@ -7,42 +7,42 @@ import java.util.ArrayList;
 
 public class Local extends DBTable {
 
-	private int id_local;
+	private int codigo;
 	private boolean tiene_cafeteria;
 	private String direccion;
 	private String descripcion;
 
-	public Local(int id_local, DBConnection conn, boolean DBSync) {
+	public Local(int codigo, DBConnection conn, boolean DBSync) {
 		super(conn, DBSync);
-		this.id_local = id_local;
+		this.codigo = codigo;
 		this.tiene_cafeteria = false;
 		this.direccion = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
-		if ((conn.connect()) && DBSync) {
-			if (!(conn.tableExists("EMPLEADO"))) {
+		if (DBSync) {
+			if (!(conn.tableExists("Empleado"))) {
 				createTable();
 			}
 			if (!this.insertEntry()) {
-				this.id_local = DBConnection.NULL_SENTINEL_INT;
+				this.codigo = DBConnection.NULL_SENTINEL_INT;
 				setSync(false);
 			}
 		}
 	}
 
-	public Local(int id_local, boolean tiene_cafeteria, String direccion, String descripcion, DBConnection conn,
+	public Local(int codigo, boolean tiene_cafeteria, String direccion, String descripcion, DBConnection conn,
 			boolean DBSync) {
 		super(conn, DBSync);
-		this.id_local = id_local;
+		this.codigo = codigo;
 		this.tiene_cafeteria = tiene_cafeteria;
 		this.direccion = direccion;
 		this.descripcion = descripcion;
 
-		if ((conn.connect()) && DBSync) {
-			if (!(conn.tableExists("EMPLEADO"))) {
+		if (DBSync) {
+			if (!(conn.tableExists("Empleado"))) {
 				createTable();
 			}
 			if (!insertEntry()) {
-				this.id_local = DBConnection.NULL_SENTINEL_INT;
+				this.codigo = DBConnection.NULL_SENTINEL_INT;
 				this.direccion = DBConnection.NULL_SENTINEL_VARCHAR;
 				this.descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
 				this.tiene_cafeteria = false;
@@ -55,7 +55,7 @@ public class Local extends DBTable {
 		if (DBSync) {
 			getEntryChanges();
 		}
-		return id_local;
+		return codigo;
 	}
 
 	public boolean getTiene_cafeteria() {
@@ -114,7 +114,7 @@ public class Local extends DBTable {
 		if (DBSync) {
 			deleteEntry();
 		}
-		id_local = DBConnection.NULL_SENTINEL_INT;
+		codigo = DBConnection.NULL_SENTINEL_INT;
 		descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
 		direccion = DBConnection.NULL_SENTINEL_VARCHAR;
 		tiene_cafeteria = false;
@@ -122,8 +122,8 @@ public class Local extends DBTable {
 	}
 
 	boolean createTable() {
-		if (!this.conn.tableExists("LOCAL")) {
-			String query = "CREATE TABLE local ( id_local int not null, tiene_cafeteria int, direccion varchar(100), descripcion varchar(100), PRIMARY KEY ( id_local ))";
+		if (!this.conn.tableExists("Local")) {
+			String query = "CREATE TABLE local ( codigo int not null, tiene_cafeteria int, direccion varchar(100), descripcion varchar(100), PRIMARY KEY ( codigo ))";
 			return conn.update(query) > 0;
 		} else {
 			return false;
@@ -132,7 +132,7 @@ public class Local extends DBTable {
 
 	boolean insertEntry() {
 		try {
-			if (conn.query("SELECT * FROM Empleado WHERE id_empleado = " + id_local).next()) {
+			if (conn.query("SELECT * FROM Empleado WHERE id_empleado = " + codigo).next()) {
 				return false;
 			}
 
@@ -147,12 +147,12 @@ public class Local extends DBTable {
 			descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
 		}
 		// Write a query to insert a new entry into the table
-		if (this.conn.tableExists("LOCAL")) {
-			String query = "INSERT INTO local (id_local, tiene_cafeteria, direccion, descripcion) VALUES ("
-					+ id_local + ", "
-					+ tiene_cafeteria + ", "
-					+ direccion + ", "
-					+ descripcion + ")";
+		if (this.conn.tableExists("Local")) {
+			String query = "INSERT INTO Local VALUES ("
+					+ codigo + ", '"
+					+ tiene_cafeteria + "',' "
+					+ direccion + "', '"
+					+ descripcion + "')";
 			return conn.update(query) > 0;
 		} else {
 			return false;
@@ -160,13 +160,12 @@ public class Local extends DBTable {
 	}
 
 	boolean updateEntry() {
-		if (!this.conn.tableExists("LOCAL")) {
+		if (!this.conn.tableExists("Local")) {
 			// Write a query to update an entry in the table
-			String query = "UPDATE local SET "
-					+ "tiene_cafeteria = " + tiene_cafeteria + ", "
-					+ "direccion = " + direccion + ", "
-					+ "descripcion = " + descripcion + " "
-					+ "WHERE id_local = " + id_local + "";
+			String query = "UPDATE Local SET tiene_cafeteria = " + tiene_cafeteria
+					+ " direccion = " + direccion
+					+ " descripcion = " + descripcion
+					+ " WHERE codigo = " + codigo + "";
 			return conn.update(query) > 0;
 		} else {
 			return false;
@@ -175,8 +174,8 @@ public class Local extends DBTable {
 
 	boolean deleteEntry() {
 		boolean deleted = false;
-		if (this.conn.tableExists("LOCAL")) {
-			String query = "DELETE FROM local WHERE id_local = " + id_local;
+		if (this.conn.tableExists("Local")) {
+			String query = "DELETE FROM Local WHERE codigo = " + codigo;
 			deleted = conn.update(query) > 0;
 		}
 		return deleted;
@@ -184,9 +183,9 @@ public class Local extends DBTable {
 
 	void getEntryChanges() {
 		ResultSet rs = null;
-		if (this.conn.tableExists("LOCAL")) {
+		if (this.conn.tableExists("Local")) {
 			try {
-				String query = "SELECT * FROM LOCAL WHERE id_local = " + id_local;
+				String query = "SELECT * FROM Local WHERE codigo = " + codigo;
 				rs = conn.query(query);
 
 				if (rs != null && rs.next()) { // tengo q mirar si es null? while?
