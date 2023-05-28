@@ -213,11 +213,11 @@ public class DBConnection {
 		boolean res = false;
 		try {
 
-			System.out.println("fuera del primer if");
+			// System.out.println("fuera del primer if");
 			ResultSet rs = query("SHOW TABLES");
 
 			while (rs.next() && !res) {
-				System.out.println("llega al if");
+				// System.out.println("llega al if");
 				if (rs.getString(1).equals(tableName))
 					res = true;
 			}

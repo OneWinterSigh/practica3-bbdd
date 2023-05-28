@@ -107,6 +107,7 @@ public class Empleado extends DBTable {
 
 	public void setApellido1(String apellido1) {
 		if (DBSync) {
+			System.out.println("Entra aqui");
 			getEntryChanges();
 		}
 		this.apellido1 = apellido1;
@@ -188,7 +189,7 @@ public class Empleado extends DBTable {
 					+ n_ss + "');";
 			return conn.update(query) > 0;
 		} else {
-			System.out.println("La tabla no existe");
+			// System.out.println("La tabla no existe");
 			return false;
 		}
 	}
