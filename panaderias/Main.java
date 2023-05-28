@@ -20,7 +20,7 @@ public class Main {
 
 		// Metodos de Empleado
 		// // Crear un nuevo empleado
-		Empleado empleado1 = new Empleado(8326, 97329, "carmen", "Martinez",
+		Empleado empleado1 = new Empleado(8326, "97329", "carmen", "Martinez",
 				"Cobo", conexion, true);
 		//
 		System.out.println(empleado1);
@@ -41,7 +41,7 @@ public class Main {
 
 		System.out.println("N_ss: " + empleado2.getN_ss()); // Obtener el valor de
 		// n_ss
-		empleado2.setN_ss(1789); // Actualizar el valor de n_ss en la base de datos
+		empleado2.setN_ss("1789"); // Actualizar el valor de n_ss en la base de datos
 		//
 		System.out.println("Nombre: " + empleado2.getNombre()); // Obtener el valor
 		// de nombre

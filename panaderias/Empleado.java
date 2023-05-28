@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Empleado extends DBTable {
 
 	private int id_empleado;
-	private int n_ss;
+	private String n_ss;
 	private String nombre;
 	private String apellido1;
 	private String apellido2;
@@ -16,7 +16,7 @@ public class Empleado extends DBTable {
 	public Empleado(int id_empleado, DBConnection conn, boolean DBSync) {
 		super(conn, DBSync);
 		this.id_empleado = id_empleado;
-		this.n_ss = DBConnection.NULL_SENTINEL_INT;
+		this.n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.nombre = DBConnection.NULL_SENTINEL_VARCHAR;
@@ -34,7 +34,7 @@ public class Empleado extends DBTable {
 		}
 	}
 
-	public Empleado(int id_empleado, int n_ss, String nombre, String apellido1, String apellido2, DBConnection conn,
+	public Empleado(int id_empleado, String n_ss, String nombre, String apellido1, String apellido2, DBConnection conn,
 			boolean DBSync) {
 
 		super(conn, DBSync);
@@ -54,7 +54,7 @@ public class Empleado extends DBTable {
 				this.nombre = DBConnection.NULL_SENTINEL_VARCHAR;
 				this.apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
 				this.apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
-				this.n_ss = DBConnection.NULL_SENTINEL_INT;
+				this.n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
 				setSync(false);
 			}
 		}
@@ -68,14 +68,14 @@ public class Empleado extends DBTable {
 		return id_empleado;
 	}
 
-	public int getN_ss() {
+	public String getN_ss() {
 		if (DBSync) {
 			getEntryChanges();
 		}
 		return n_ss;
 	}
 
-	public void setN_ss(int n_ss) {
+	public void setN_ss(String n_ss) {
 		if (DBSync) {
 			getEntryChanges();
 		}
@@ -141,7 +141,7 @@ public class Empleado extends DBTable {
 		if (DBSync) {
 			deleteEntry();
 		}
-		n_ss = DBConnection.NULL_SENTINEL_INT;
+		n_ss = DBConnection.NULL_SENTINEL_VARCHAR;
 		apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
 		apellido2 = DBConnection.NULL_SENTINEL_VARCHAR;
 		nombre = DBConnection.NULL_SENTINEL_VARCHAR;
@@ -228,7 +228,7 @@ public class Empleado extends DBTable {
 				rs = conn.query(query);
 
 				if (rs != null && rs.next()) { // tengo q mirar si es null? while?
-					n_ss = rs.getInt("n_ss");
+					n_ss = rs.getString("n_ss");
 					nombre = rs.getString("nombre");
 					apellido1 = rs.getString("apellido1");
 					apellido2 = rs.getString("apellido2");

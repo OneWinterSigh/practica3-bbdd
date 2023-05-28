@@ -17,7 +17,7 @@ public class DataManager {
 			result = new ArrayList<Empleado>();
 			int i = 0;
 			while (rsq != null && rsq.next()) {
-				result.add(new Empleado(rsq.getInt(1), rsq.getInt(5), rsq.getString(2), rsq.getString(3),
+				result.add(new Empleado(rsq.getInt(1), rsq.getString(5), rsq.getString(2), rsq.getString(3),
 						rsq.getString(4), conn, false));
 				result.get(i).setSync(true);
 				i++;
@@ -39,7 +39,7 @@ public class DataManager {
 			l = bufferEmpleado.readLine();
 			while ((l = bufferEmpleado.readLine()) != null) {
 				String[] data = l.split(";");
-				Empleado empleadoLeido = new Empleado(Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2],
+				Empleado empleadoLeido = new Empleado(Integer.parseInt(data[0]), data[1], data[2],
 						data[3], data[4],
 						conn,
 						sync);
