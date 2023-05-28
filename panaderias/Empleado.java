@@ -49,6 +49,7 @@ public class Empleado extends DBTable {
 				createTable();
 			}
 			if (!insertEntry()) {
+				System.out.println("Comprobado");
 				this.id_empleado = DBConnection.NULL_SENTINEL_INT;
 				this.nombre = DBConnection.NULL_SENTINEL_VARCHAR;
 				this.apellido1 = DBConnection.NULL_SENTINEL_VARCHAR;
@@ -186,11 +187,11 @@ public class Empleado extends DBTable {
 		}
 		if (this.conn.tableExists("Empleado")) {
 			String query = "INSERT INTO Empleado VALUES ("
-					+ id_empleado + ",'"
-					+ nombre + "','"
-					+ apellido1 + "','"
-					+ apellido2 + "','"
-					+ n_ss + "');";
+					+ id_empleado + ","
+					+ nombre + ","
+					+ apellido1 + ","
+					+ apellido2 + ","
+					+ n_ss + ");";
 			return conn.update(query) >= 0;
 		} else {
 			return false;
@@ -199,7 +200,7 @@ public class Empleado extends DBTable {
 
 	boolean updateEntry() {
 		if (!this.conn.tableExists("Empleado")) {
-			String query = "UPDATE empleado SET n_ss = " + n_ss
+			String query = "UPDATE Empleado SET n_ss = " + n_ss
 					+ " nombre=" + nombre
 					+ " apellido1=" + apellido1
 					+ " apellido2=" + apellido2

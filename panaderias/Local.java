@@ -8,14 +8,14 @@ import java.util.ArrayList;
 public class Local extends DBTable {
 
 	private int codigo;
-	private boolean tiene_cafeteria;
+	private int tiene_cafeteria;
 	private String direccion;
 	private String descripcion;
 
 	public Local(int codigo, DBConnection conn, boolean DBSync) {
 		super(conn, DBSync);
 		this.codigo = codigo;
-		this.tiene_cafeteria = false;
+		this.tiene_cafeteria = DBConnection.NULL_SENTINEL_INT;
 		this.direccion = DBConnection.NULL_SENTINEL_VARCHAR;
 		this.descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
 		if (DBSync) {
@@ -33,7 +33,7 @@ public class Local extends DBTable {
 			boolean DBSync) {
 		super(conn, DBSync);
 		this.codigo = codigo;
-		this.tiene_cafeteria = tiene_cafeteria;
+		this.tiene_cafeteria = (tiene_cafeteria) ? 1 : 0;
 		this.direccion = direccion;
 		this.descripcion = descripcion;
 
@@ -45,7 +45,7 @@ public class Local extends DBTable {
 				this.codigo = DBConnection.NULL_SENTINEL_INT;
 				this.direccion = DBConnection.NULL_SENTINEL_VARCHAR;
 				this.descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
-				this.tiene_cafeteria = false;
+				this.tiene_cafeteria = 0;
 				setSync(false);
 			}
 		}
@@ -62,14 +62,14 @@ public class Local extends DBTable {
 		if (DBSync) {
 			getEntryChanges();
 		}
-		return tiene_cafeteria;
+		return tiene_cafeteria > 0 ? true : false;
 	}
 
 	public void setTiene_cafeteria(boolean tiene_cafeteria) {
 		if (DBSync) {
 			getEntryChanges();
 		}
-		this.tiene_cafeteria = tiene_cafeteria;
+		this.tiene_cafeteria = (tiene_cafeteria) ? 1 : 0;
 		if (DBSync) {
 			updateEntry();
 		}
@@ -117,7 +117,7 @@ public class Local extends DBTable {
 		codigo = DBConnection.NULL_SENTINEL_INT;
 		descripcion = DBConnection.NULL_SENTINEL_VARCHAR;
 		direccion = DBConnection.NULL_SENTINEL_VARCHAR;
-		tiene_cafeteria = false;
+		tiene_cafeteria = 0;
 		setSync(false);
 	}
 
@@ -132,7 +132,7 @@ public class Local extends DBTable {
 
 	boolean insertEntry() {
 		try {
-			if (conn.query("SELECT * FROM Empleado WHERE id_empleado = " + codigo).next()) {
+			if (conn.query("SELECT * FROM Local WHERE codigo = " + codigo).next()) {
 				return false;
 			}
 
@@ -191,7 +191,7 @@ public class Local extends DBTable {
 				if (rs != null && rs.next()) { // tengo q mirar si es null? while?
 					descripcion = rs.getString("descripcion");
 					direccion = rs.getString("direccion");
-					tiene_cafeteria = rs.getBoolean("tiene_cafeteria");
+					tiene_cafeteria = rs.getInt("tiene_cafeteria");
 					rs.close();
 				}
 			} catch (SQLException e) {

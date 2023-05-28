@@ -17,9 +17,8 @@ public class DataManager {
 			result = new ArrayList<Empleado>();
 			int i = 0;
 			while (rsq != null && rsq.next()) {
-				result.add(new Empleado(rsq.getInt(1), rsq.getInt(2), rsq.getString(3), rsq.getString(4),
-						rsq.getString(5),
-						conn, false));
+				result.add(new Empleado(rsq.getInt(1), rsq.getInt(5), rsq.getString(2), rsq.getString(3),
+						rsq.getString(4), conn, false));
 				result.get(i).setSync(true);
 				i++;
 			}

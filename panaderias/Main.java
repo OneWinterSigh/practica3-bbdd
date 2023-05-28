@@ -24,6 +24,8 @@ public class Main {
 				"Cobo", conexion, true);
 		//
 		System.out.println(empleado1);
+
+		System.out.println(conexion.tableExists("Local"));
 		//
 		/*
 		 * System.out.println("Presiona Enter para continuar...");
@@ -137,7 +139,7 @@ public class Main {
 			}
 		}
 
-		String csvFile = "src/data/empleados.csv";
+		String csvFile = "./panaderias/empleados.csv";
 		Path filePath = Paths.get(csvFile);
 		String absolutePath = filePath.toAbsolutePath().toString();
 		try {
@@ -155,7 +157,7 @@ public class Main {
 			}
 		}
 		//
-		String csvFile_locales = "src/data/locales.csv";
+		String csvFile_locales = "./panaderias/locales.csv";
 		Path filePath_locales = Paths.get(csvFile_locales);
 		String absolutePath_locales = filePath_locales.toAbsolutePath().toString();
 		System.out.println(absolutePath_locales);
