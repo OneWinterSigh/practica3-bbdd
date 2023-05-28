@@ -43,7 +43,7 @@ public class DBConnection {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				conn = DriverManager.getConnection(url, user, pass);
 			} else {
-				return false;
+				return true;
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -59,12 +59,15 @@ public class DBConnection {
 
 	public boolean close() {
 		try {
-			conn.close();
-			return true;
+			if (conn != null) {
+				conn.close();
+				conn = null;
+			}
 		} catch (SQLException e) {
 			System.out.println("Error: unable to close connection!");
 			return false;
 		}
+		return conn == null;
 	}
 
 	// CHECK --->
@@ -73,6 +76,9 @@ public class DBConnection {
 	// -- mirar las diapositivas
 	public int update(String sql) {
 		try {
+			if (!connect()){
+				return -1; 
+			}
 			Statement stmt = conn.createStatement();
 			int filasAfectadas = stmt.executeUpdate(sql);
 			return filasAfectadas;
@@ -145,6 +151,9 @@ public class DBConnection {
 		Statement stmt = null;
 		ResultSet result = null;
 		try {
+			if (!connect()){
+				return null; 
+			}
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(sql);
 			return result;
@@ -166,7 +175,7 @@ public class DBConnection {
 
 		try {
 			if (!connect()) {
-				return result = null;
+				return null;
 			}
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -213,7 +222,9 @@ public class DBConnection {
 	public boolean tableExists(String tableName) {
 		boolean res = false;
 		try {
-
+			if (!connect()) {
+				return false;
+			}
 			// System.out.println("fuera del primer if");
 			ResultSet rs = query("SHOW TABLES");
 
