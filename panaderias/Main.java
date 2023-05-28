@@ -15,17 +15,17 @@ public class Main {
 	public static void main(String[] args) {
 		// Hacer pruebas aquí para comprobar la funcionalidad
 		System.out.println("-- INICIO --");
-		DBConnection conexion = new DBConnection("localhost", 3306, "root", "1234", "panaderias");
+		DBConnection conn = new DBConnection("localhost", 3306, "root", "1234", "panaderias");
 		System.out.println("-- CONECTADO A LA BASE DE DATOS --");
 
 		// Metodos de Empleado
 		// // Crear un nuevo empleado
-		Empleado empleado1 = new Empleado(8326, "97329", "carmen", "Martinez",
-				"Cobo", conexion, true);
+		Empleado e1 = new Empleado(8326, "97329", "carmen", "Martinez",
+				"Cobo", conn, true);
 		//
-		System.out.println(empleado1);
+		System.out.println(e1);
 
-		System.out.println(conexion.tableExists("Local"));
+		System.out.println(conn.tableExists("Local"));
 		//
 		/*
 		 * System.out.println("Presiona Enter para continuar...");
@@ -33,75 +33,75 @@ public class Main {
 		 * scanner.nextLine(); // Pausa la ejecución hasta que se presione Enter
 		 * System.out.println("Continuando la ejecución...");
 		 * scanner.close();
-		 * System.out.println(empleado1);
+		 * System.out.println(e1);
 		 */
-		Empleado empleado2 = new Empleado(23423, conexion, true);
+		Empleado e2 = new Empleado(23423, conn, true);
 
-		System.out.println("ID: " + empleado2.getId_empleado());
+		System.out.println("ID: " + e2.getId_empleado());
 
-		System.out.println("N_ss: " + empleado2.getN_ss()); // Obtener el valor de
+		System.out.println("N_ss: " + e2.getN_ss()); // Obtener el valor de
 		// n_ss
-		empleado2.setN_ss("1789"); // Actualizar el valor de n_ss en la base de datos
+		e2.setN_ss("1789"); // Actualizar el valor de n_ss en la base de datos
 		//
-		System.out.println("Nombre: " + empleado2.getNombre()); // Obtener el valor
+		System.out.println("Nombre: " + e2.getNombre()); // Obtener el valor
 		// de nombre
-		empleado2.setNombre("Juan"); // Actualizar el valor de nombre en la base de
+		e2.setNombre("Juan"); // Actualizar el valor de nombre en la base de
 		// datos
 		//
-		System.out.println("Apellido1: " + empleado2.getApellido1()); // Obtener el
+		System.out.println("Apellido1: " + e2.getApellido1()); // Obtener el
 		// valor de apellido1
-		empleado2.setApellido1("Perez"); // Actualizar el valor de apellido1 en la
+		e2.setApellido1("Perez"); // Actualizar el valor de apellido1 en la
 		// base de datos
 		//
-		System.out.println("Apellido2: " + empleado2.getApellido2()); // Obtener el
+		System.out.println("Apellido2: " + e2.getApellido2()); // Obtener el
 		// valor de apellido2
-		empleado2.setApellido2("Gomez"); // Actualizar el valor de apellido2 en la
+		e2.setApellido2("Gomez"); // Actualizar el valor de apellido2 en la
 		// base de datos
 
-		System.out.println(empleado2);
+		System.out.println(e2);
 
-		empleado2.insertEntry();
-		System.out.println(empleado1);
-		// System.out.println(empleado2.createTable());
-		// System.out.println(conexion.tableExists("Empleado"));
-		boolean inser2 = empleado2.insertEntry();
-		boolean inser1 = empleado1.insertEntry();
+		e2.insertEntry();
+		System.out.println(e1);
+		// System.out.println(e2.createTable());
+		// System.out.println(conn.tableExists("Empleado"));
+		boolean inser2 = e2.insertEntry();
+		boolean inser1 = e1.insertEntry();
 		System.out.println(inser1);
 		System.out.println(inser2);
 
 		// Metodos de Local
 
 		// Crear un nuevo objeto Local
-		Local local = new Local(2, true, "Calle Principal", "Local amplio y luminoso", conexion, true);
+		Local l1 = new Local(2, true, "Calle Principal", "Local amplio y luminoso", conn, true);
 		//
 		//
-		Local local3 = new Local(3, true, "Calle 3", "Local 3 y luminoso", conexion,
+		Local l3 = new Local(3, true, "Calle 3", "Local 3 y luminoso", conn,
 				true);
 		//
 		//
 		// // Probar los métodos de la clase Local
-		System.out.println("ID Local: " + local.getId_local());
-		System.out.println("Tiene Cafetería: " + local.getTiene_cafeteria());
-		System.out.println("Dirección: " + local.getDireccion());
-		System.out.println("Descripción: " + local.getDescripcion());
+		System.out.println("ID Local: " + l1.getId_local());
+		System.out.println("Tiene Cafetería: " + l1.getTiene_cafeteria());
+		System.out.println("Dirección: " + l1.getDireccion());
+		System.out.println("Descripción: " + l1.getDescripcion());
 		//
 		//// // Actualizar los atributos del objeto Local
-		local.setTiene_cafeteria(false);
-		local.setDireccion("Calle secundaria");
-		local.setDescripcion("Local pequeño y feo");
+		l1.setTiene_cafeteria(false);
+		l1.setDireccion("Calle secundaria");
+		l1.setDescripcion("Local pequeño y feo");
 
 		////
 		//// // Obtener los cambios de la entrada desde la base de datos
-		local.getEntryChanges();
+		l1.getEntryChanges();
 		////
 		//// // Mostrar los atributos actualizados
-		System.out.println("ID Local: " + local.getId_local());
-		System.out.println("Tiene Cafetería: " + local.getTiene_cafeteria());
-		System.out.println("Dirección: " + local.getDireccion());
-		System.out.println("Descripción: " + local.getDescripcion());
+		System.out.println("ID Local: " + l1.getId_local());
+		System.out.println("Tiene Cafetería: " + l1.getTiene_cafeteria());
+		System.out.println("Dirección: " + l1.getDireccion());
+		System.out.println("Descripción: " + l1.getDescripcion());
 		//
 		//// Eliminar la entrada de la base de datos
-		boolean deleted = local.deleteEntry();
+		boolean deleted = l1.deleteEntry();
 		System.out.println(deleted ? "Entrada eliminada con éxito" : "Error al eliminar la entrada");
 
 		// Metodos de Trabaja
@@ -113,11 +113,11 @@ public class Main {
 		java.sql.Date fecha_fin = java.sql.Date.valueOf("2023-05-31");
 		//
 		Trabaja trabaja = new Trabaja(id_empleado, codigo, fecha_inicio, fecha_fin,
-				conexion, true);
+				conn, true);
 		//
 		//// // Obtener los datos de un registro existente de Trabaja
 		Trabaja trabajaExistente = new Trabaja(2, 2, fecha_inicio, fecha_fin,
-				conexion, true);
+				conn, true);
 		////
 		//// // Modificar un registro de Trabaja
 		trabajaExistente.setFecha_fin(java.sql.Date.valueOf("2023-04-30"));
@@ -125,13 +125,13 @@ public class Main {
 		////
 		//// // Eliminar un registro de Trabaja
 		Trabaja trabajaAEliminar = new Trabaja(3, 3, fecha_inicio, fecha_fin,
-				conexion, true);
+				conn, true);
 		trabajaAEliminar.deleteEntry();
 		//
 		//
 
 		// // Prueba de getEmpleadosFromDB
-		ArrayList<Empleado> empleadosFromDB = DataManager.getEmpleadosFromDB(conexion, false);
+		ArrayList<Empleado> empleadosFromDB = DataManager.getEmpleadosFromDB(conn, false);
 		if (empleadosFromDB != null) {
 			System.out.println("Empleados obtenidos de la base de datos:");
 			for (Empleado empleado : empleadosFromDB) {
@@ -149,7 +149,7 @@ public class Main {
 		}
 
 		System.out.println(absolutePath);
-		ArrayList<Empleado> empleadosFromCSV = DataManager.getEmpleadosFromCSV(absolutePath, conexion, true);
+		ArrayList<Empleado> empleadosFromCSV = DataManager.getEmpleadosFromCSV(absolutePath, conn, true);
 		if (empleadosFromCSV != null) {
 			System.out.println("Empleados obtenidos desde el archivo CSV:");
 			for (Empleado empleado : empleadosFromCSV) {
@@ -161,7 +161,7 @@ public class Main {
 		Path filePath_locales = Paths.get(csvFile_locales);
 		String absolutePath_locales = filePath_locales.toAbsolutePath().toString();
 		System.out.println(absolutePath_locales);
-		ArrayList<Local> localesFromCSV = DataManager.getLocalesFromCSV(absolutePath_locales, conexion, true);
+		ArrayList<Local> localesFromCSV = DataManager.getLocalesFromCSV(absolutePath_locales, conn, true);
 		if (localesFromCSV != null) {
 			System.out.println("Locales obtenidos desde el archivo CSV:");
 			for (Local l : localesFromCSV) {
@@ -186,7 +186,7 @@ public class Main {
 			}
 		}
 
-		ArrayList<Empleado> empleados = DataManager.getEmpleadosFromDB(conexion, false);
+		ArrayList<Empleado> empleados = DataManager.getEmpleadosFromDB(conn, false);
 		if (empleados != null) {
 			System.out.println("Empleados en la base de datos:");
 			for (Empleado empleado : empleados) {
@@ -201,7 +201,7 @@ public class Main {
 			System.out.println("Error al obtener los empleados de la base de datos");
 		}
 
-		ArrayList<Local> locales = DataManager.getLocalesFromDB(conexion, true);
+		ArrayList<Local> locales = DataManager.getLocalesFromDB(conn, true);
 
 		if (locales != null) {
 			System.out.println("Locales en la base de datos:");
@@ -218,12 +218,12 @@ public class Main {
 
 		// Cerrar la conexión a la base de datos
 		// scanner.close();
-		conexion.close();
+		conn.close();
 		System.out.println("Conexión cerrada correctamente");
 		//
 
 		// Insertar el empleado en la base de datos
-		// boolean insertado = empleado1.insertEntry();
+		// boolean insertado = e1.insertEntry();
 
 	}
 
